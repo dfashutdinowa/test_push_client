@@ -34,14 +34,38 @@ function subscribe() {
                         console.warn(currentToken);
                     } else {
                         console.warn('Не удалось получить токен.');
+                        setTokenSentToServer(false);
                     }
                 })
                 .catch(function (err) {
                     console.warn('При получении токена произошла ошибка.', err);
-                    console.warn(err);
+                    setTokenSentToServer(false);
                 });
     })
     .catch(function (err) {
         console.warn('Не удалось получить разрешение на показ уведомлений.', err);
     });
+}
+
+// отправка ID на сервер
+function sendTokenToServer(currentToken) {
+    if (!isTokenSentToServer(currentToken)) {
+        console.log('Отправка токена на сервер...');
+        setTokenSentToServer(currentToken);
+    } else {
+        console.log('Токен уже отправлен на сервер.');
+    }
+}
+
+// используем localStorage для отметки того,
+// что пользователь уже подписался на уведомления
+function isTokenSentToServer(currentToken) {
+    return window.localStorage.getItem('sentFirebaseMessagingToken') == currentToken;
+}
+
+function setTokenSentToServer(currentToken) {
+    window.localStorage.setItem(
+        'sentFirebaseMessagingToken',
+        currentToken ? currentToken : ''
+    );
 }
