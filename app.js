@@ -1,5 +1,5 @@
 firebase.initializeApp({
-    messagingSenderId: '623138124006'
+    messagingSenderId: '531031941998'
 });
 
 
@@ -182,8 +182,7 @@ function getToken() {
 
 
 function sendNotification(notification) {
-    var key = 'AAAAaGQ_q2M:APA91bGCEOduj8HM6gP24w2LEnesqM2zkL_qx2PJUSBjjeGSdJhCrDoJf_WbT7wpQZrynHlESAoZ1VHX9Nro6W_tqpJ3Aw-A292SVe_4Ho7tJQCQxSezDCoJsnqXjoaouMYIwr34vZTs';
-
+    var key = 'AAAAe6P4Y24:APA91bEi_EVivrIKaljTP_nDlwlbj5M2kv8eG7Sn8n2mn3HlJQvc6uGsU8yJAynDFYvUEaJWeUTbB7uQoUyb8b1gFc5z-Y-Hi82FgGnbHIwH1F0tOoKYwM7dnrr7lyN_4bW9MKrbSuLy';
     console.log('Send notification', notification);
 
     // hide last notification data
@@ -246,6 +245,7 @@ function isTokenSentToServer(currentToken) {
 function setTokenSentToServer(currentToken) {
     if (currentToken) {
         window.localStorage.setItem('sentFirebaseMessagingToken', currentToken);
+		
     } else {
         window.localStorage.removeItem('sentFirebaseMessagingToken');
     }
