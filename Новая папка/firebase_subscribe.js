@@ -1,12 +1,7 @@
-
-// firebase-messaging-sw.js
-importScripts('https://www.gstatic.com/firebasejs/3.6.8/firebase-app.js');
-importScripts('https://www.gstatic.com/firebasejs/3.6.8/firebase-messaging.js');
-
+// firebase_subscribe.js
 firebase.initializeApp({
     messagingSenderId: '531031941998'
 });
-
 
 // браузер поддерживает уведомления
 // вообще, эту проверку должна делать библиотека Firebase, но она этого не делает
@@ -36,7 +31,7 @@ function subscribe() {
                     console.log(currentToken);
 
                     if (currentToken) {
-                        console.warn(currentToken);
+                        sendTokenToServer(currentToken);
                     } else {
                         console.warn('Не удалось получить токен.');
                         setTokenSentToServer(false);
@@ -56,6 +51,12 @@ function subscribe() {
 function sendTokenToServer(currentToken) {
     if (!isTokenSentToServer(currentToken)) {
         console.log('Отправка токена на сервер...');
+
+        var url = ''; // адрес скрипта на сервере который сохраняет ID устройства
+        $.post(url, {
+            token: currentToken
+        });
+
         setTokenSentToServer(currentToken);
     } else {
         console.log('Токен уже отправлен на сервер.');
