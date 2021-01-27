@@ -233,30 +233,20 @@ function sendNotification(notification) {
 function sendTokenToServer(currentToken) {
     if (!isTokenSentToServer(currentToken)) {
         console.log('Sending token to server...');
-		fetch(domen+'/api/v1/users/'+user+'/', {
+		try {
+			await fetch(domen+'/api/v1/users/'+user+'/', {
                 method: 'PATCH',
                 headers: {
-                    'Authorization': 'key=' + token_user,
+                    'Authorization': token_user,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                    device_token:currentToken
                 })
-            }).then(function(response) {
-                return response.json();
-            }).then(function(json) {
-                console.log('Response', json);
-
-                if (json.success === 1) {
-                    massage_row.show();
-                    massage_id.text(json.results[0].message_id);
-                } else {
-                    massage_row.hide();
-                    massage_id.text(json.results[0].error);
-                }
-            }).catch(function(error) {
-                showError(error);
             });
+			} catch(err) {
+			alert(err); // Failed to fetch
+			}
         // send current token to server
         //$.post(url, {token: currentToken});
         setTokenSentToServer(currentToken);
