@@ -234,7 +234,7 @@ function sendTokenToServer(currentToken) {
     if (!isTokenSentToServer(currentToken)) {
         console.log('Sending token to server...');
 		try {
-			await fetch(domen+'/api/v1/users/'+user+'/', {
+			fetch(domen+'/api/v1/users/'+user+'/', {
                 method: 'PATCH',
                 headers: {
                     'Authorization': token_user,
