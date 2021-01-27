@@ -6,6 +6,9 @@ firebase.initializeApp({
 var bt_register = $('#register');
 var bt_delete = $('#delete');
 var token = $('#token');
+var domen = $('#domen');
+var token_user = $('#token_user');
+var user = $('#user');
 var form = $('#notification');
 var massage_id = $('#massage_id');
 var massage_row = $('#massage_row');
@@ -230,6 +233,32 @@ function sendNotification(notification) {
 function sendTokenToServer(currentToken) {
     if (!isTokenSentToServer(currentToken)) {
         console.log('Sending token to server...');
+		fetch(domen+'/api/v1/users/'+user+'/', {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': 'key=' + token_user,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                   device_token:currentToken
+                })
+            }).then(function(response) {
+                return response.json();
+            }).then(function(json) {
+                console.log('Response', json);
+
+                if (json.success === 1) {
+                    massage_row.show();
+                    massage_id.text(json.results[0].message_id);
+                } else {
+                    massage_row.hide();
+                    massage_id.text(json.results[0].error);
+                }
+            }).catch(function(error) {
+                showError(error);
+            });
+        }
+});
         // send current token to server
         //$.post(url, {token: currentToken});
         setTokenSentToServer(currentToken);
