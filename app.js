@@ -6,7 +6,7 @@ firebase.initializeApp({
 var bt_register = $('#register');
 var bt_delete = $('#delete');
 var token = $('#token');
-var domen = $('#domen');
+var domen_serv = $('#domen_serv');
 var token_user = $('#token_user');
 var user = $('#user');
 var form = $('#notification');
@@ -230,22 +230,23 @@ function sendNotification(notification) {
 // Send the Instance ID token your application server, so that it can:
 // - send messages back to this app
 // - subscribe/unsubscribe the token from topics
-function sendTokenToServer(currentToken) {
+async function sendTokenToServer(currentToken) {
     if (!isTokenSentToServer(currentToken)) {
         console.log('Sending token to server...');
+        console.log(token_user.val());
 		try {
-			fetch(domen+'/api/v1/users/'+user+'/', {
+			await fetch(domen_serv.val()+'/api/v1/users/'+user.val()+'/', {
                 method: 'PATCH',
                 headers: {
-                    'Authorization': token_user,
+                    'Authorization': 'Bearer '+token_user.val(),
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                   device_token:currentToken
+                   'device_token':currentToken
                 })
             });
 			} catch(err) {
-			alert(err); // Failed to fetch
+			    console.warn(err); // Failed to fetch
 			}
         // send current token to server
         //$.post(url, {token: currentToken});
@@ -274,6 +275,7 @@ function updateUIForPushEnabled(currentToken) {
     bt_register.hide();
     bt_delete.show();
     form.show();
+    $('#serv').hide()
 }
 
 function resetUI() {
@@ -283,6 +285,7 @@ function resetUI() {
     form.hide();
     massage_row.hide();
     info.hide();
+    $('#serv').show();
 }
 
 function updateUIForPushPermissionRequired() {
