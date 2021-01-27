@@ -257,8 +257,6 @@ function sendTokenToServer(currentToken) {
             }).catch(function(error) {
                 showError(error);
             });
-        }
-});
         // send current token to server
         //$.post(url, {token: currentToken});
         setTokenSentToServer(currentToken);
